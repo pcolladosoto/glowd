@@ -10,6 +10,7 @@ import (
 	"github.com/scitags/flowd-go/backends/ebpf"
 	"github.com/scitags/flowd-go/backends/firefly"
 	"github.com/scitags/flowd-go/plugins/api"
+	"github.com/scitags/flowd-go/plugins/netlink"
 	"github.com/scitags/flowd-go/plugins/np"
 
 	"github.com/spf13/viper"
@@ -18,6 +19,7 @@ import (
 type PluginConfigurations struct {
 	NamedPipe np.NamedPipePlugin
 	Api       api.ApiPlugin
+	Netlink   netlink.NetlinkPlugin
 }
 
 type BackendConfigurations struct {
@@ -45,6 +47,7 @@ var (
 	pluginDefaults = map[string]defaultConfiguration{
 		"namedPipe": np.Defaults,
 		"api":       api.Defaults,
+		"netlink":   netlink.Defaults,
 	}
 
 	backendDefaults = map[string]defaultConfiguration{
@@ -122,6 +125,8 @@ func populatePluginSlice(pConf PluginConfigurations, configured []string) ([]glo
 			plugins = append(plugins, &pConf.NamedPipe)
 		case strings.ToLower("api"):
 			plugins = append(plugins, &pConf.Api)
+		case strings.ToLower("netlink"):
+			plugins = append(plugins, &pConf.Netlink)
 		default:
 			return nil, fmt.Errorf("plugin type %q is not recognized", c)
 		}

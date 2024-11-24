@@ -81,6 +81,19 @@ documentation provided with the implementation for information on how to interac
 - **bindPort [int] {7777}**: The port to bind the server to. Bear in mind this value **MUST** be equal to o lower than `65535` as ports are
   represented with 16-bit unsigned integers.
 
+## netlink
+The **netlink** plugin will leverage the `sock_diag(7)` `netlink(7)` subsystem to find information on TCP{4,6} sockets with an
+established connections. Given netlink's design, this information must be polled at a regular interval. Connection closures
+will be implicitly inferred from the disappearance of established connections. Flows with either source or destination addresses
+belonging to private networks won't be taken into account. Please refer to the implementation for a list of these so-called
+private address ranges.
+
+- **pollIntervalSeconds [int] {5}**: How long to wait to poll netlink for information again, in seconds.
+
+- **experimentID [int] {55}**: The Experiment ID to embed in all netlink-discovered flows.
+
+- **activityID [int] {55}**: The Activity ID to embed in all netlink-discovered flows.
+
 # BACKENDS
 This section lists the configuration options available for each of the provided backends. For a deeper explanation please
 refer to the documentation accompanying the implementation, which can be found on the URL provided in the DESCRIPTION. The

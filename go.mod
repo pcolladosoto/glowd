@@ -7,9 +7,11 @@ require (
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/pion/stun/v3 v3.0.0
 	github.com/pion/transport/v3 v3.0.7
+	github.com/prometheus/procfs v0.15.1
 	github.com/rjeczalik/notify v0.9.3
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.19.0
+	github.com/vishvananda/netlink v1.3.0
 )
 
 require (
@@ -33,6 +35,7 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
+	github.com/vishvananda/netns v0.0.4 // indirect
 	github.com/wlynxg/anet v0.0.3 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
