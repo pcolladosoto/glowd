@@ -14,7 +14,7 @@ DOC_FILE = $(BIN_NAME).1.md
 RPM_BUILDROOT = $(shell echo ${HOME})/rpmbuild
 
 # Be sure to check https://rpm-packaging-guide.github.io for more info!
-rpm: doc build
+rpm: doc build $(RPM_BUILDROOT)
 	@echo "Building RPM with buildroot $(RPM_BUILDROOT)"
 	@echo "Copying artifacts to the RPM buildroot..."
 	@cp $(BIN_DIR)/$(BIN_NAME)                $(RPM_BUILDROOT)/SOURCES/$(BIN_NAME)
@@ -25,6 +25,11 @@ rpm: doc build
 	@rpmbuild -bb $(RPM_DIR)/$(BIN_NAME).spec
 	@echo "Copying the RPM to $(RPM_DIR)"
 	@cp $(RPM_BUILDROOT)/RPMS/x86_64/flowd-go-$(VERSION)-1.x86_64.rpm $(RPM_DIR)
+
+# If the devtree doesn't exist (i.e. we're running in the CI container) simply create it
+$(RPM_BUILDROOT):
+	@echo "Creating RPM build tree..."
+	rpmdev-setuptree
 
 doc: $(RPM_DIR)/$(DOC_FILE)
 	@echo "Building documentation"

@@ -19,9 +19,6 @@ jobs:
         runs-on: ubuntu-latest
         container:
             image: ghcr.io/scitags/flowd-go:v1.0
-            credentials:
-                username: ${{ github.actor }}
-                password: ${{ secrets.SCITAGS_ORG_TOKEN }}
         steps:
             - name: Show environment information
               env:
@@ -30,14 +27,14 @@ jobs:
               run: |
                 echo "Environment:"
                 env
-                echo "The current directory is:"
-                pwd
+                echo "The current directory is: $(pwd)"
                 echo "It's contents are:"
                 ls -lh
-                echo "Who are we?"
-                id
+                echo "Who are we? $(id)"
                 echo "GitHub's context"
                 echo $GITHUB_CONTEXT
+                echo "HOME contents"
+                ls -lh ${HOME}
 
             - name: Clone the flowd-go repo
               shell: bash
@@ -47,14 +44,17 @@ jobs:
             - name: Build the RPM
               shell: bash
               working-directory: ./flowd-go
+              # Note we cannot create the RPM build tree when building the container
+              # as GitHub's CI implementation will mangle the HOME directory...
               run: |
+                rpmdev-setuptree
                 make rpm
 
             - name: Release time!
               shell: bash
+              working-directory: ./flowd-go
               env:
                 TAG_NAME: ${{ github.ref_name }}
-                GITHUB_TOKEN: ${{ secrets.SCITAGS_ORG_TOKEN }}
-              working-directory: ./datad/src
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
-                gh release create --repo scitags/flowd --generate-notes $TAG_NAME ./bin/flowd-go rpms/*.rpm
+                gh release create --repo scitags/flowd-go --generate-notes $TAG_NAME ./bin/flowd-go rpms/*.rpm

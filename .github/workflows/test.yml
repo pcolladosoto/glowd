@@ -17,9 +17,9 @@ jobs:
         runs-on: ubuntu-latest
         container:
             image: ghcr.io/scitags/flowd-go:v1.0
-            credentials:
-                username: ${{ github.actor }}
-                password: ${{ secrets.SCITAGS_ORG_TOKEN }}
+            # credentials:
+                # username: ${{ github.actor }}
+                # password: ${{ secrets.SCITAGS_ORG_TOKEN }}
         steps:
             - name: Show environment information
               env:
@@ -46,6 +46,7 @@ jobs:
             # the binary or not.
             - name: Check we can build the project
               shell: bash
+              working-directory: ./flowd-go
               run: |
                 make build
               if: ${{ ! startsWith(github.ref, 'refs/tags/') }}

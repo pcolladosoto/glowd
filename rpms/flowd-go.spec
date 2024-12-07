@@ -46,5 +46,5 @@ install -m 0664 %{_sourcedir}/%{name}.1.gz    %{buildroot}%{_mandir}/man1/%{name
 * Thu Nov 14 2024 Pablo Collado Soto <pablo.collado.soto@cern.ch> - 2.0-1
 - Update to flowd-go-2.0
 
-* Sun Nov 6 2024 Pablo Collado Soto <pablo.collado.soto@cern.ch> - 1.0-1
+* Wed Nov 6 2024 Pablo Collado Soto <pablo.collado.soto@cern.ch> - 1.0-1
 - Release flowd-go-1.0

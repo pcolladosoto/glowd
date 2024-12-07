@@ -36,6 +36,8 @@ RUN yum check-update || true  && \
         make-1:4.3            \
         git-2.43.5            \
         tcpdump-4.99.0        \
+        iproute-6.2.0         \
+        iproute-tc-6.2.0      \
     && yum clean all
 
 # Get Go
