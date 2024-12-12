@@ -7,7 +7,7 @@
 PWD = $(shell pwd)
 
 # Unclutter the target recipes a bit by pulling information out.
-CONTAINER_IMAGE = ghcr.io/scitags/flowd-go-cont:v1.0
+CONTAINER_IMAGE = ghcr.io/scitags/flowd-go:v1.0
 CONTAINER_NAME = flowd-go
 
 # Now, what do each of these flags do?

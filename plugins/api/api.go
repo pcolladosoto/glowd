@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	glowd "github.com/scitags/flowd-go"
+	glowdTypes "github.com/scitags/flowd-go/types"
 )
 
 var (
@@ -44,7 +44,7 @@ func (p *ApiPlugin) Init() error {
 	return nil
 }
 
-func (p *ApiPlugin) Run(done <-chan struct{}, outChan chan<- glowd.FlowID) {
+func (p *ApiPlugin) Run(done <-chan struct{}, outChan chan<- glowdTypes.FlowID) {
 	slog.Debug("running the api plugin")
 
 	// Configure the middleware for extending the context of the

@@ -1,4 +1,4 @@
-package glowd
+package types
 
 import (
 	"net"

@@ -3,7 +3,7 @@ package firefly
 import (
 	"log/slog"
 
-	glowd "github.com/scitags/flowd-go"
+	glowdTypes "github.com/scitags/flowd-go/types"
 )
 
 var (
@@ -28,7 +28,7 @@ func (b *FireflyBackend) Init() error {
 	return nil
 }
 
-func (b *FireflyBackend) Run(done <-chan struct{}, inChan <-chan glowd.FlowID) {
+func (b *FireflyBackend) Run(done <-chan struct{}, inChan <-chan glowdTypes.FlowID) {
 	slog.Debug("running the firefly backend")
 	for {
 		select {

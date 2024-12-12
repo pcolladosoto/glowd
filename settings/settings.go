@@ -5,12 +5,12 @@ import (
 	"log/slog"
 	"strings"
 
-	glowd "github.com/scitags/flowd-go"
+	glowdTypes "github.com/scitags/flowd-go/types"
 
 	"github.com/scitags/flowd-go/backends/ebpf"
 	"github.com/scitags/flowd-go/backends/firefly"
+	"github.com/scitags/flowd-go/netlink"
 	"github.com/scitags/flowd-go/plugins/api"
-	"github.com/scitags/flowd-go/plugins/netlink"
 	"github.com/scitags/flowd-go/plugins/np"
 
 	"github.com/spf13/viper"
@@ -29,8 +29,8 @@ type BackendConfigurations struct {
 
 type Configuration struct {
 	General  GeneralConfiguration
-	Plugins  []glowd.Plugin
-	Backends []glowd.Backend
+	Plugins  []glowdTypes.Plugin
+	Backends []glowdTypes.Backend
 }
 
 type defaultConfiguration map[string]interface{}
@@ -117,8 +117,8 @@ func populateBP(conf *viper.Viper, path string, defaults map[string]defaultConfi
 	return configuredKeys, nil
 }
 
-func populatePluginSlice(pConf PluginConfigurations, configured []string) ([]glowd.Plugin, error) {
-	plugins := []glowd.Plugin{}
+func populatePluginSlice(pConf PluginConfigurations, configured []string) ([]glowdTypes.Plugin, error) {
+	plugins := []glowdTypes.Plugin{}
 	for _, c := range configured {
 		switch strings.ToLower(c) {
 		case strings.ToLower("namedPipe"):
@@ -134,8 +134,8 @@ func populatePluginSlice(pConf PluginConfigurations, configured []string) ([]glo
 	return plugins, nil
 }
 
-func populateBackendSlice(bConf BackendConfigurations, configured []string) ([]glowd.Backend, error) {
-	backends := []glowd.Backend{}
+func populateBackendSlice(bConf BackendConfigurations, configured []string) ([]glowdTypes.Backend, error) {
+	backends := []glowdTypes.Backend{}
 	for _, c := range configured {
 		switch strings.ToLower(c) {
 		case strings.ToLower("ebpf"):

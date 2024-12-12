@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/rjeczalik/notify"
-	glowd "github.com/scitags/flowd-go"
+	glowdTypes "github.com/scitags/flowd-go/types"
 )
 
 var (
@@ -49,7 +49,7 @@ func (np *NamedPipePlugin) Init() error {
 	return nil
 }
 
-func (np *NamedPipePlugin) Run(done <-chan struct{}, outChan chan<- glowd.FlowID) {
+func (np *NamedPipePlugin) Run(done <-chan struct{}, outChan chan<- glowdTypes.FlowID) {
 	slog.Debug("running the named pipe plugin")
 
 	// If we open the FIFO (i.e. named pipe) only for reading, the call will block
@@ -113,9 +113,9 @@ func (np *NamedPipePlugin) Cleanup() error {
 	return nil
 }
 
-func parseEvents(rawEvents string) []glowd.FlowID {
+func parseEvents(rawEvents string) []glowdTypes.FlowID {
 	rawEventsSlice := strings.Split(rawEvents, "\n")
-	flowIDs := make([]glowd.FlowID, 0, len(rawEventsSlice))
+	flowIDs := make([]glowdTypes.FlowID, 0, len(rawEventsSlice))
 
 	// Drop the last entry as it'll always be empty...
 	for _, rawEvent := range rawEventsSlice[:len(rawEventsSlice)-1] {
@@ -125,13 +125,13 @@ func parseEvents(rawEvents string) []glowd.FlowID {
 			continue
 		}
 
-		flowState, ok := glowd.ParseFlowState(fields[0])
+		flowState, ok := glowdTypes.ParseFlowState(fields[0])
 		if !ok {
 			slog.Warn("wrong flow state", "flow state", fields[0])
 			continue
 		}
 
-		proto, ok := glowd.ParseProtocol(fields[1])
+		proto, ok := glowdTypes.ParseProtocol(fields[1])
 		if !ok {
 			slog.Warn("wrong protocol", "protocol", fields[1])
 			continue
@@ -173,18 +173,18 @@ func parseEvents(rawEvents string) []glowd.FlowID {
 			continue
 		}
 
-		flowID := glowd.FlowID{
+		flowID := glowdTypes.FlowID{
 			State:      flowState,
 			Protocol:   proto,
-			Src:        glowd.IPPort{IP: srcIP, Port: uint16(srcPort)},
-			Dst:        glowd.IPPort{IP: dstIP, Port: uint16(dstPort)},
+			Src:        glowdTypes.IPPort{IP: srcIP, Port: uint16(srcPort)},
+			Dst:        glowdTypes.IPPort{IP: dstIP, Port: uint16(dstPort)},
 			Experiment: uint32(experimentId),
 			Activity:   uint32(activityId),
 		}
 
-		if flowState == glowd.START {
+		if flowState == glowdTypes.START {
 			flowID.StartTs = time.Now()
-		} else if flowState == glowd.END {
+		} else if flowState == glowdTypes.END {
 			flowID.EndTs = time.Now()
 		} else {
 			slog.Warn("somehow the flow state got mangled", "flowState", flowState.String())

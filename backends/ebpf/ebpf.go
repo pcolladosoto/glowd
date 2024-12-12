@@ -13,7 +13,7 @@ import (
 	"math/rand"
 
 	bpf "github.com/aquasecurity/libbpfgo"
-	glowd "github.com/scitags/flowd-go"
+	glowdTypes "github.com/scitags/flowd-go/types"
 )
 
 // Please note this example has been basically plundered from:
@@ -155,7 +155,7 @@ func (b *EbpfBackend) Init() error {
 	return nil
 }
 
-func (b *EbpfBackend) Run(done <-chan struct{}, inChan <-chan glowd.FlowID) {
+func (b *EbpfBackend) Run(done <-chan struct{}, inChan <-chan glowdTypes.FlowID) {
 	slog.Debug("running the ebpf backend")
 
 	for {
@@ -179,7 +179,7 @@ func (b *EbpfBackend) Run(done <-chan struct{}, inChan <-chan glowd.FlowID) {
 				"rawDstIPHi", rawDstIPHi, "rawDstIPLo", rawDstIPLo)
 
 			switch flowID.State {
-			case glowd.START:
+			case glowdTypes.START:
 				flowTag := b.genFlowTag(flowID.Experiment, flowID.Activity)
 
 				flowHashPtr := unsafe.Pointer(&flowHash)
@@ -189,7 +189,7 @@ func (b *EbpfBackend) Run(done <-chan struct{}, inChan <-chan glowd.FlowID) {
 					continue
 				}
 				slog.Debug("inserted map value", "flowHash", flowHash, "flowTag", flowTag)
-			case glowd.END:
+			case glowdTypes.END:
 				flowHashPtr := unsafe.Pointer(&flowHash)
 				if err := b.flowMap.DeleteKey(flowHashPtr); err != nil {
 					slog.Error("error deleting map key", "err", err, "flowHash", flowHash)

@@ -50,5 +50,9 @@ func IsIPPrivate(ip net.IP) bool {
 			return true
 		}
 	}
+
+	// A different approach could be what github.com/m-lab/tcp-info does:
+	// return ip.IsLoopback() || ip.IsLinkLocalUnicast() || ip.IsMulticast() || ip.IsUnspecified()
+
 	return false
 }

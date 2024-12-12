@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	glowd "github.com/scitags/flowd-go"
+	glowdTypes "github.com/scitags/flowd-go/types"
 )
 
-func (b *FireflyBackend) sendFirefly(flowID glowd.FlowID) error {
+func (b *FireflyBackend) sendFirefly(flowID glowdTypes.FlowID) error {
 	dialNet := "udp6"
 	if !strings.Contains(flowID.Dst.IP.String(), ":") {
 		dialNet = "udp4"
@@ -40,9 +40,9 @@ func (b *FireflyBackend) sendFirefly(flowID glowd.FlowID) error {
 	localFirefly.Context.ActivityID = flowID.Activity
 	localFirefly.Context.Application = APPLICATION
 
-	if flowID.State == glowd.START {
+	if flowID.State == glowdTypes.START {
 		localFirefly.FlowLifecycle.StartTime = flowID.StartTs.Format(TIME_FORMAT)
-	} else if flowID.State == glowd.END {
+	} else if flowID.State == glowdTypes.END {
 		localFirefly.FlowLifecycle.StartTime = flowID.StartTs.Format(TIME_FORMAT)
 		localFirefly.FlowLifecycle.EndTime = flowID.EndTs.Format(TIME_FORMAT)
 	} else {

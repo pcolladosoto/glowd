@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"log/slog"
 
-	glowd "github.com/scitags/flowd-go"
+	glowdTypes "github.com/scitags/flowd-go/types"
 )
 
-func initPlugins(plugins []glowd.Plugin) error {
+func initPlugins(plugins []glowdTypes.Plugin) error {
 	for _, plugin := range plugins {
 		if err := plugin.Init(); err != nil {
 			return fmt.Errorf("error setting up plugin %s: %w", plugin, err)
@@ -16,7 +16,7 @@ func initPlugins(plugins []glowd.Plugin) error {
 	return nil
 }
 
-func initBackends(backends []glowd.Backend) error {
+func initBackends(backends []glowdTypes.Backend) error {
 	for _, backend := range backends {
 		if err := backend.Init(); err != nil {
 			return fmt.Errorf("error setting up backend %s: %w", backend, err)
@@ -25,7 +25,7 @@ func initBackends(backends []glowd.Backend) error {
 	return nil
 }
 
-func cleanupPlugins(plugins []glowd.Plugin) {
+func cleanupPlugins(plugins []glowdTypes.Plugin) {
 	for _, plugin := range plugins {
 		if err := plugin.Cleanup(); err != nil {
 			slog.Error("error cleaning up plugin", "plugin", plugin, "err", err)
@@ -33,7 +33,7 @@ func cleanupPlugins(plugins []glowd.Plugin) {
 	}
 }
 
-func cleanupBackends(backends []glowd.Backend) {
+func cleanupBackends(backends []glowdTypes.Backend) {
 	for _, backend := range backends {
 		if err := backend.Cleanup(); err != nil {
 			slog.Error("error cleaning up backend", "backend", backend, "err", err)

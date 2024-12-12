@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/labstack/echo/v4"
-	glowd "github.com/scitags/flowd-go"
+	glowdTypes "github.com/scitags/flowd-go/types"
 )
 
 const (
@@ -16,5 +16,5 @@ type rootResponse struct {
 type extendedContext struct {
 	echo.Context
 	apiRoutes   []*echo.Route
-	flowChannel chan<- glowd.FlowID
+	flowChannel chan<- glowdTypes.FlowID
 }
