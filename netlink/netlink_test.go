@@ -1,6 +1,8 @@
 package netlink
 
 import (
+	"encoding/json"
+	"fmt"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -30,13 +32,16 @@ func init() {
 }
 
 func TestRequestExecution(t *testing.T) {
-	plugin := NetlinkPlugin{}
-	if err := plugin.Init(); err != nil {
-		t.Errorf("couldn't initialise the netlink plugin: %v", err)
+	resps, err := NewTCPDiagRequest(unix.AF_INET, 0, 0).ExecuteRequest()
+	if err != nil {
+		t.Errorf("failed to execute request: %v", err)
 	}
 
-	req := plugin.MakeRequest(unix.AF_INET, 0, 0)
-	if err := plugin.ExecuteRequest(req); err != nil {
-		t.Errorf("failed to execute request: %v", err)
+	for i, resp := range resps {
+		mResp, err := json.MarshalIndent(resp, "", "    ")
+		if err != nil {
+			t.Errorf("failed to marshall response %d: %v", i, err)
+		}
+		fmt.Printf("response %d:\n%s\n", i, mResp)
 	}
 }

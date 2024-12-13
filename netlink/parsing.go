@@ -117,6 +117,80 @@ func (t *Cong) deserialize(b []byte) error {
 	return nil
 }
 
+func (t *VegasInfo) deserialize(b []byte) error {
+	if len(b) != 16 {
+		return errors.New("invalid length for vegasInfo")
+	}
+
+	rb := bytes.NewBuffer(b)
+
+	next := rb.Next(4)
+	if len(next) == 0 {
+		return nil
+	}
+	t.Enabled = native.Uint32(next)
+
+	next = rb.Next(4)
+	if len(next) == 0 {
+		return nil
+	}
+	t.RTTCount = native.Uint32(next)
+
+	next = rb.Next(4)
+	if len(next) == 0 {
+		return nil
+	}
+	t.RTT = native.Uint32(next)
+
+	next = rb.Next(4)
+	if len(next) == 0 {
+		return nil
+	}
+	t.MinRTT = native.Uint32(next)
+
+	return nil
+}
+
+func (t *DCTCPInfo) deserialize(b []byte) error {
+	if len(b) != 16 {
+		return errors.New("invalid length for dctcpInfo")
+	}
+
+	rb := bytes.NewBuffer(b)
+
+	next := rb.Next(2)
+	if len(next) == 0 {
+		return nil
+	}
+	t.Enabled = native.Uint16(next)
+
+	next = rb.Next(2)
+	if len(next) == 0 {
+		return nil
+	}
+	t.CEState = native.Uint16(next)
+
+	next = rb.Next(4)
+	if len(next) == 0 {
+		return nil
+	}
+	t.Alpha = native.Uint32(next)
+
+	next = rb.Next(4)
+	if len(next) == 0 {
+		return nil
+	}
+	t.ABEcn = native.Uint32(next)
+
+	next = rb.Next(4)
+	if len(next) == 0 {
+		return nil
+	}
+	t.ABTot = native.Uint32(next)
+
+	return nil
+}
+
 func (t *SkMemInfo) deserialize(b []byte) error {
 	if len(b) != skMemInfoLen {
 		return errors.New("Invalid length")
