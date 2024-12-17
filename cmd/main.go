@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log/slog"
 	"os"
@@ -59,6 +60,23 @@ var (
 		Short: "Get the built version.",
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Printf("built commit: %s\nbase version: %s\n", builtCommit, baseVersion)
+		},
+	}
+
+	confCmd = &cobra.Command{
+		Use:   "conf",
+		Short: "Dump the configuration we're running with.",
+		Run: func(cmd *cobra.Command, args []string) {
+			conf, err := settings.ReadConf(confPath)
+			if err != nil {
+				slog.Error("couldn't read the configuration", "err", err)
+				return
+			}
+			jsonConf, err := json.MarshalIndent(conf, "", "    ")
+			if err != nil {
+				fmt.Printf("couldn't marshall the configuration: %v", err)
+			}
+			fmt.Printf("%s\n", jsonConf)
 		},
 	}
 
@@ -171,6 +189,7 @@ func init() {
 
 	// Add the different sub-commands
 	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(confCmd)
 	rootCmd.AddCommand(runCmd)
 }
 

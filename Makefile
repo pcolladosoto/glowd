@@ -103,6 +103,10 @@ help:
 	@echo "       docker-build: build the development container."
 	@echo "        docker-push: push the built image to GitHub's registry."
 	@echo ""
+	@echo "       firefly-start: send a firefly as defined in plugins/fireflyp/testdata/start_firefly.json."
+	@echo "         firefly-end: send a firefly as defined in plugins/fireflyp/testdata/end_firefly.json."
+	@echo "      firefly-listen: listen for outgoing fireflies on port 10515."
+	@echo ""
 	@echo "             clean: delete everything defined as rubbish."
 
 # Simply build flowd-go

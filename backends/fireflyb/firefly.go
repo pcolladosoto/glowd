@@ -1,4 +1,4 @@
-package firefly
+package fireflyb
 
 import (
 	"log/slog"
@@ -9,13 +9,15 @@ import (
 var (
 	Defaults = map[string]interface{}{
 		"fireflyDestinationPort": 10514,
-		"prependSyslog":          false,
+		"prependSyslog":          true,
+		"addNetlinkContext":      true,
 	}
 )
 
 type FireflyBackend struct {
 	FireflyDestinationPort uint16 `json:"fireflyDestinationPort"`
 	PrependSyslog          bool   `json:"prependSyslog"`
+	AddNetlinkContext      bool   `json:"addNetlinkContext"`
 }
 
 func (b *FireflyBackend) String() string {

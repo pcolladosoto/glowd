@@ -4,18 +4,23 @@ import (
 	"net"
 	"strings"
 	"time"
+
+	"github.com/scitags/flowd-go/netlink"
+	"golang.org/x/sys/unix"
 )
 
 type FlowID struct {
 	State      FlowState
 	Protocol   Protocol
+	Family     Family
 	Src        IPPort
 	Dst        IPPort
 	Experiment uint32
 	Activity   uint32
 	StartTs    time.Time
 	EndTs      time.Time
-	NetLink    string
+	CurrentTs  time.Time
+	NetLink    netlink.InetDiagTCPInfoResp
 }
 
 type IPPort struct {
@@ -25,9 +30,19 @@ type IPPort struct {
 
 type Protocol int
 
+type Family int
+
+type FlowState int
+
 const (
 	TCP Protocol = iota
 	UDP
+
+	START FlowState = iota
+	END
+
+	IPv4 Family = unix.AF_INET
+	IPv6 Family = unix.AF_INET6
 )
 
 // TODO: Find a way to make this nicer. Maybe init() functions is the
@@ -52,6 +67,16 @@ var (
 		START: "START",
 		END:   "END",
 	}
+
+	familyMap = map[string]Family{
+		"IPV4": IPv4,
+		"IPV6": IPv4,
+	}
+
+	ylimafMap = map[Family]string{
+		IPv4: "ipv4",
+		IPv6: "ipv6",
+	}
 )
 
 func (p Protocol) String() string {
@@ -63,12 +88,14 @@ func ParseProtocol(proto string) (Protocol, bool) {
 	return p, ok
 }
 
-type FlowState int
+func (f Family) String() string {
+	return ylimafMap[f]
+}
 
-const (
-	START FlowState = iota
-	END
-)
+func ParseFamily(proto string) (Family, bool) {
+	f, ok := familyMap[strings.ToUpper(proto)]
+	return f, ok
+}
 
 func (fs FlowState) String() string {
 	return wolfMap[fs]

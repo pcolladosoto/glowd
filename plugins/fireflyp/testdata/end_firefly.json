@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "flow-lifecycle": {
+        "state": "end",
+        "current-time": "2021-09-07T22:22:22.000708+00:00",
+        "start-time": "2021-09-07T22:22:21.999933+00:00",
+        "end-time": "2021-09-07T22:22:22.000690+00:00"
+    },
+    "flow-id": {
+        "afi": "ipv6",
+        "src-ip": "fe80::1",
+        "dst-ip": "fe80::2",
+        "protocol": "udp",
+        "src-port": 1234,
+        "dst-port": 56789
+    },
+    "context": {
+        "experiment-id": 3333,
+        "activity-id": 12,
+        "application": "grid-ftp v99.99"
+    }
+}

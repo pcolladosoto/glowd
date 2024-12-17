@@ -8,8 +8,9 @@ import (
 	glowdTypes "github.com/scitags/flowd-go/types"
 
 	"github.com/scitags/flowd-go/backends/ebpf"
-	"github.com/scitags/flowd-go/backends/firefly"
+	"github.com/scitags/flowd-go/backends/fireflyb"
 	"github.com/scitags/flowd-go/plugins/api"
+	"github.com/scitags/flowd-go/plugins/fireflyp"
 	"github.com/scitags/flowd-go/plugins/np"
 
 	"github.com/spf13/viper"
@@ -18,11 +19,12 @@ import (
 type PluginConfigurations struct {
 	NamedPipe np.NamedPipePlugin
 	Api       api.ApiPlugin
+	Firefly   fireflyp.FireflyPlugin
 }
 
 type BackendConfigurations struct {
 	Ebpf    ebpf.EbpfBackend
-	Firefly firefly.FireflyBackend
+	Firefly fireflyb.FireflyBackend
 }
 
 type Configuration struct {
@@ -45,11 +47,12 @@ var (
 	pluginDefaults = map[string]defaultConfiguration{
 		"namedPipe": np.Defaults,
 		"api":       api.Defaults,
+		"firefly":   fireflyp.Defaults,
 	}
 
 	backendDefaults = map[string]defaultConfiguration{
 		"ebpf":    ebpf.Defaults,
-		"firefly": firefly.Defaults,
+		"firefly": fireflyb.Defaults,
 	}
 )
 
@@ -122,6 +125,8 @@ func populatePluginSlice(pConf PluginConfigurations, configured []string) ([]glo
 			plugins = append(plugins, &pConf.NamedPipe)
 		case strings.ToLower("api"):
 			plugins = append(plugins, &pConf.Api)
+		case strings.ToLower("firefly"):
+			plugins = append(plugins, &pConf.Firefly)
 		default:
 			return nil, fmt.Errorf("plugin type %q is not recognized", c)
 		}

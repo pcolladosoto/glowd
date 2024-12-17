@@ -6,17 +6,13 @@
         "stun:stun.services.mozilla.org:3478"
     ],
     "plugins": {
-        "namedPipe": {
-            "maxReaders": 5,
-            "buffSize": 1000,
-            "pipePath": "np"
-        },
-        "api": {}
+        "firefly": {
+            "deadline": 0
+        }
     },
     "backends": {
-        "ebpf": {
-            "markingStrategy": "hopByHopDestHeaders",
-            "debugMode": true
+        "firefly": {
+            "fireflyDestinationPort": 10515
         }
     }
 }
